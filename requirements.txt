@@ -2,6 +2,9 @@ streamlit
 google-generativeai
 langchain
 langchain-community
-faiss-cpu==1.7.4
+langchain-text-splitters
+langchain-huggingface
+langchain-core
+faiss-cpu
 sentence-transformers
 pypdf
