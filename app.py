@@ -1,9 +1,10 @@
+
 import streamlit as st
 import google.generativeai as genai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain.docstore.document import Document
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.documents import Document
 from pypdf import PdfReader
 
 st.set_page_config(page_title="RAG Tutoring Chatbot", page_icon="📚")
@@ -103,3 +104,4 @@ Answer:"""
                         st.markdown(f"**Chunk {i+1}:** {doc.page_content[:300]}...")
 
         st.session_state.messages.append({"role": "assistant", "content": answer})
+
