@@ -29,7 +29,7 @@ class GeminiEmbeddings(Embeddings):
         vectors = []
         for text in texts:
             result = genai.embed_content(
-                model="models/text-embedding-004",
+                model="models/gemini-embedding-001",
                 content=text,
                 task_type="retrieval_document",
             )
@@ -38,7 +38,7 @@ class GeminiEmbeddings(Embeddings):
 
     def embed_query(self, text):
         result = genai.embed_content(
-            model="models/text-embedding-004",
+            model="models/gemini-embedding-001",
             content=text,
             task_type="retrieval_query",
         )
@@ -130,4 +130,5 @@ Answer:"""
                         st.markdown(f"**Chunk {i+1}:** {doc.page_content[:300]}...")
 
         st.session_state.messages.append({"role": "assistant", "content": answer})
+
 
