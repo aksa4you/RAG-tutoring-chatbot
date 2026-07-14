@@ -1,9 +1,8 @@
-
 import streamlit as st
 import google.generativeai as genai
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.embeddings import Embeddings
 from langchain_core.documents import Document
 from pypdf import PdfReader
 
@@ -20,6 +19,35 @@ if not GOOGLE_API_KEY:
 
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
+
+
+class GeminiEmbeddings(Embeddings):
+    """Uses Gemini's embedding API instead of a local model - much lighter
+    and faster on limited-memory free hosting."""
+
+    def embed_documents(self, texts):
+        vectors = []
+        for text in texts:
+            result = genai.embed_content(
+                model="models/text-embedding-004",
+                content=text,
+                task_type="retrieval_document",
+            )
+            vectors.append(result["embedding"])
+        return vectors
+
+    def embed_query(self, text):
+        result = genai.embed_content(
+            model="models/text-embedding-004",
+            content=text,
+            task_type="retrieval_query",
+        )
+        return result["embedding"]
+
+
+@st.cache_resource(show_spinner=False)
+def get_embeddings_model():
+    return GeminiEmbeddings()
 
 # ---------- Session state ----------
 if "vectorstore" not in st.session_state:
@@ -55,9 +83,7 @@ with st.sidebar:
                 chunks = splitter.split_text(raw_text)
                 docs = [Document(page_content=chunk) for chunk in chunks]
 
-                embeddings = HuggingFaceEmbeddings(
-                    model_name="sentence-transformers/all-MiniLM-L6-v2"
-                )
+                embeddings = get_embeddings_model()
                 st.session_state.vectorstore = FAISS.from_documents(docs, embeddings)
 
             st.success(f"Knowledge base built from {len(uploaded_files)} file(s), {len(chunks)} chunks.")
