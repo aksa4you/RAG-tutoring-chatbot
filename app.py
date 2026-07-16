@@ -7,6 +7,70 @@ from langchain_core.documents import Document
 from pypdf import PdfReader
 
 st.set_page_config(page_title="RAG Tutoring Chatbot", page_icon="📚")
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* App background with subtle gradient */
+.stApp {
+    background: linear-gradient(180deg, #0E1117 0%, #12151C 100%);
+}
+
+/* Title styling */
+h1 {
+    background: linear-gradient(90deg, #00D9FF, #7C3AED);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700 !important;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #14171F;
+    border-right: 1px solid #262B36;
+}
+
+/* Chat message bubbles */
+[data-testid="stChatMessage"] {
+    background-color: #1A1D24;
+    border: 1px solid #262B36;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+}
+
+/* File uploader box */
+[data-testid="stFileUploader"] {
+    background-color: #1A1D24;
+    border: 1px dashed #00D9FF44;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Buttons */
+.stButton > button {
+    background: linear-gradient(90deg, #00D9FF, #7C3AED);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: transform 0.15s ease;
+}
+.stButton > button:hover {
+    transform: scale(1.03);
+}
+
+/* Chat input box */
+[data-testid="stChatInput"] {
+    border: 1px solid #00D9FF55 !important;
+    border-radius: 10px !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 st.title("📚 RAG-Based Tutoring Chatbot")
 st.caption("Upload your study material (PDF or text), then ask questions about it.")
